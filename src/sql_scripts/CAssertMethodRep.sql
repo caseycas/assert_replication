@@ -1,0 +1,1 @@
+SELECT sum(method_count) FROM (SELECT project, file_name, count(distinct(method_name)) as method_count FROM assert_replication.fc_everything_src_agg WHERE language = 'c' and commit_date < '2014-7-20' and assertion_add > 0 GROUP BY project, file_name) as subtable;

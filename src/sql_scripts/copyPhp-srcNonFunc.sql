@@ -1,0 +1,1 @@
+\copy (SELECT *  FROM assert_july_2015_no_merge1.non_function WHERE project = 'php-src' and (language = 'c' or language = 'cpp' or language = 'c++' or language = 'cxx' or language = 'cp' or language = 'cc')) to php-src-non-func.csv
