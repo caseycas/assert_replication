@@ -7,8 +7,8 @@ library(stargazer)
 
 #m = read.csv("MyWork/MyCurrent/Ray_asserts_paper_ICSE2015/inputs_sep3/method_assert.csv")
 #Current set to replicate ICSE -> same dates, no big commit filtering.
-m <- read.csv("~/assert_project_repos/assert/data/method_assert_everything_before_ICSE_no_merge.csv")
-m <- read.csv("~/assert_project_repos/assert/data/method_assert_everything_before_ICSE_no_merge_expanded.csv")
+m <- read.csv("../../data/Csvs/R_Inputs/method_assert_everything_before_ICSE_no_merge.csv")
+m <- read.csv("../../data/Csvs/R_Inputs/method_assert_everything_before_ICSE_no_merge_expanded.csv")
 
 #No limit to ICSE
 #m <- read.csv("~/assert_project_repos/assert/data/method_assert_everything_no_merge.csv")
@@ -180,13 +180,13 @@ model_assert_scale  =  glm(total_bug  ~ log(total_add) + dev + assert_add,
 
 # require('stargazer')
  stargazer(model_full_bin_scale,model_assert_scale,single.row = TRUE,
-           out="~/assert_project_repos/assertPaperFinal/Replication/model_bug_all_scale_revised.tex")
+           out="../../data/Outputs/model_bug_all_scale_revised.tex")
 
 
 print(xtable(anova(model_assert_scale)),
-      file='~/assert_project_repos/assertPaperFinal/Replication/model_nobug_scale_anova_revised.tex')
+      file='../../data/Outputs/model_nobug_scale_anova_revised.tex')
 print(xtable(anova(model_full_bin_scale)),
-      file='~/assert_project_repos/assertPaperFinal/Replication/model_hurdle_anova_revised.tex')
+      file='../../data/Outputs/model_hurdle_anova_revised.tex')
 
 # print(xtable(anova(model_assert_scale)),
 #       file='~/paper/assert_paper/tables/model_nobug_scale_anova.tex')
@@ -223,156 +223,11 @@ l = glm(total_bug  ~ log(total_add) + dev + assert_add, family = quasipoisson, d
 # stargazer(h,l, single.row = TRUE,
 #           out="/Users/bray/paper/assert_paper/tables/model_bug_assert_bydev.tex")
 
-stargazer(h,l, single.row = TRUE,out="~/assert_project_repos/assertPaperFinal/Replication/model_bug_assert_bydev_revised.tex")
+stargazer(h,l, single.row = TRUE,out="../../data/Outputs/model_bug_assert_bydev_revised.tex")
 
 # #print(xtable(anova(model_assert_scale)),file ='~/paper/assert_paper/tables/model_assert_scale_anova.tex')
 # print(xtable(anova(h)), file='~/paper/assert_paper/tables/model_high_anova.tex')
 # print(xtable(anova(l)), file='~/paper/assert_paper/tables/model_low_anova.tex')
 
-print(xtable(anova(h)), file='~/assert_project_repos/assertPaperFinal/Replication/model_high_anova_revised.tex')
-print(xtable(anova(l)), file='~/assert_project_repos/assertPaperFinal/Replication/model_low_anova_revised.tex')
-
-#Before and after the assert was added.
-
-
-#Note that this one is including .h and .cpp files.
-assertBeforeAndAfter <- read.csv("~/assert_project_repos/assert/data/assertBeforeAndAfter.csv", header=FALSE)
-colnames(assertBeforeAndAfter) <- c("b_project", "b_lang", "b_file", "b_test", "b_method", "b_assert_add", "b_assert_del", "b_total_add", "b_total_del", "b_bug", "b_dev","a_project", "a_lang", "a_file", "a_test", "a_method", "a_assert_add", "a_assert_del", "a_total_add", "a_total_del", "a_bug", "a_dev")
-assertBeforeAndAfter <- sqldf("SELECT * FROM assertBeforeAndAfter WHERE b_file LIKE \'%.c\' OR b_file LIKE \'%.cc\' OR b_file LIKE '%.cpp' OR b_file LIKE '%.c++' OR b_file LIKE '%.cp' OR b_file LIKE '%.cxx';") #CohensD is slightly higher here, not really that different
-
-#We can limit it before ICSE date, but it makes no difference...
-#Again, similar behavior when including header files.
-#The count of asserts here matches (almost - its like 60 off...) asserts in m when no capping by date, size, but by language...
-
-assertBeforeAndAfter[is.na(assertBeforeAndAfter)] <- 0
-View(assertBeforeAndAfter)
-
-#Basic test
-wilcox.test(assertBeforeAndAfter$b_bug, assertBeforeAndAfter$a_bug, paired=TRUE, alternative='less')
-cohensD(assertBeforeAndAfter$b_bug, assertBeforeAndAfter$a_bug, method='paired')
-
-#Normalize by lines added
-beforeBugPerAdded <- assertBeforeAndAfter$b_bug/assertBeforeAndAfter$b_total_add
-afterBugPerAdded <- assertBeforeAndAfter$a_bug/assertBeforeAndAfter$a_total_add
-beforeBugPerAdded[is.na(beforeBugPerAdded)] <- 0
-beforeBugPerAdded[is.infinite(beforeBugPerAdded)] <- assertBeforeAndAfter$b_bug[is.infinite(beforeBugPerAdded)]
-afterBugPerAdded[is.na(afterBugPerAdded)] <- 0
-afterBugPerAdded[is.infinite(afterBugPerAdded)] <- assertBeforeAndAfter$a_bug[is.infinite(afterBugPerAdded)]
-
-wilcox.test(beforeBugPerAdded, afterBugPerAdded, paired=TRUE, alternative='less')
-cohensD(beforeBugPerAdded, afterBugPerAdded, method='paired')
-
-#Normalize by devs
-beforeBugPerDev <- assertBeforeAndAfter$b_bug/assertBeforeAndAfter$b_dev
-afterBugPerDev <- assertBeforeAndAfter$a_bug/assertBeforeAndAfter$a_dev
-beforeBugPerDev[is.na(beforeBugPerDev)] <- 0
-afterBugPerDev[is.na(afterBugPerDev)] <- 0
-
-wilcox.test(beforeBugPerDev, afterBugPerDev, paired=TRUE, alternative='less')
-cohensD(beforeBugPerDev, afterBugPerDev, method='paired')
-
-#Normalize by net line change
-beforeBugPerNet <- assertBeforeAndAfter$b_bug/(assertBeforeAndAfter$b_total_add-assertBeforeAndAfter$b_total_del)
-beforeBugPerNet[is.na(beforeBugPerNet)] <- 0
-beforeBugPerNet[is.infinite(beforeBugPerNet)] <- assertBeforeAndAfter$b_bug[is.infinite(beforeBugPerNet)]
-
-afterBugPerNet <- assertBeforeAndAfter$a_bug/(assertBeforeAndAfter$a_total_add-assertBeforeAndAfter$a_total_del)
-afterBugPerNet[is.na(afterBugPerNet)] <- 0
-afterBugPerNet[is.infinite(afterBugPerNet)] <- assertBeforeAndAfter$b_bug[is.infinite(afterBugPerNet)]
-wilcox.test(beforeBugPerNet, afterBugPerNet, paired=TRUE, alternative='greater') 
-cohensD(beforeBugPerNet, afterBugPerNet, method='paired') #Very small, effect is slightly greater when unpaired..
-
-#Corrective Asserts
-buggyBefore <- assertBeforeAndAfter[assertBeforeAndAfter$b_bug > 0,]
-wilcox.test(buggyBefore$b_bug, buggyBefore$a_bug, paired=TRUE, alternative='greater') 
-cohensD(buggyBefore$b_bug, buggyBefore$a_bug, method='paired')
-
-#Corrective with size normalization
-beforeBugPerAdded2 <- buggyBefore$b_bug/buggyBefore$b_total_add
-afterBugPerAdded2 <- buggyBefore$a_bug/buggyBefore$a_total_add
-beforeBugPerAdded2[is.na(beforeBugPerAdded2)] <- 0
-beforeBugPerAdded2[is.infinite(beforeBugPerAdded2)] <- buggyBefore$b_bug[is.infinite(beforeBugPerAdded2)]
-afterBugPerAdded2[is.na(afterBugPerAdded2)] <- 0
-afterBugPerAdded2[is.infinite(afterBugPerAdded2)] <- buggyBefore$a_bug[is.infinite(afterBugPerAdded2)]
-
-wilcox.test(beforeBugPerAdded2, afterBugPerAdded2, paired=TRUE, alternative='greater')
-cohensD(beforeBugPerAdded2, afterBugPerAdded2, method='paired')
-
-
-beforeBugPerDev2 <-  buggyBefore$b_bug/buggyBefore$b_dev
-afterBugPerDev2 <- buggyBefore$a_bug/buggyBefore$a_dev
-beforeBugPerDev2[is.na(beforeBugPerDev2)] <- 0
-afterBugPerDev2[is.na(afterBugPerDev2)] <- 0
-
-wilcox.test(beforeBugPerDev2, afterBugPerDev2, paired=TRUE, alternative='less')
-cohensD(beforeBugPerDev2, afterBugPerDev2, method='paired')
-
-#Regressions on just buggyBefore + noAsserts
-noAsserts <- m[m$total_assert == 0,]
-#Want the total lines and devs in history, not just after assert?
-temp = m
-colnames(temp) <- c("b_project", "b_file", "b_method", "total_assert","total_add","total_bug", "dev")
-#colnames(temp) <- c("b_project", "b_file", "b_method", "assert_add", "assert_del","total_add","total_del","total_bug", "dev","net_assert","assert_change","net_lines","line_change")
-merged = merge(buggyBefore, temp, by = c("b_project", "b_file", "b_method"))
-#Get the net assertion change
-merged$NetAssert <- merged$b_assert_add + merged$a_assert_add - merged$b_assert_del - merged$a_assert_del
-merged$AssertChange <- merged$b_assert_add + merged$a_assert_add + merged$b_assert_del + merged$a_assert_del
-
-
-converted <- merged[,c(1,2,3,23,24,21,26)]
-colnames(converted) <- c("project", "file_name", "method_name", "total_assert","total_add","total_bug", "dev")
-combinedSample <- rbind(noAsserts, converted)
-bug_New <- glm(total_bug > 0 ~ log(total_add) + dev + total_assert, family = "binomial", data = combinedSample)
-
-converted2 <- merged[,c(1,2,3,27,24,21,26)]
-colnames(converted2) <- c("project", "file_name", "method_name", "net_assert","total_add","total_bug", "dev")
-colnames(noAsserts) <- c("project", "file_name", "method_name", "net_assert","total_add","total_bug", "dev")
-combinedSample2 <- rbind(noAsserts, converted2)
-bug_New2 <- glm(total_bug > 0 ~ log(total_add) + dev + net_assert, family = "binomial", data = combinedSample2)
-
-converted3 <- merged[,c(1,2,3,28,24,21,26)]
-colnames(converted3) <- c("project", "file_name", "method_name", "assert_change","total_add","total_bug", "dev")
-colnames(noAsserts) <- c("project", "file_name", "method_name", "assert_change","total_add","total_bug", "dev")
-combinedSample3 <- rbind(noAsserts, converted3)
-combinedSample3$net_assert <- combinedSample2$net_assert
-bug_New3 <- glm(total_bug > 0 ~ log(total_add) + dev + assert_change + net_assert, family = "binomial", data = combinedSample3)
-
-bug_New4 <- glm(total_bug ~ log(total_add) + dev + assert_change + net_assert, family = "quasipoisson", data = combinedSample3)
-
-bug_New5 <- zeroinfl(total_bug ~ log(total_add) + dev + assert_change + net_assert, data = combinedSample3)
-
-method_assert_everything_no_merge_expanded <- read.csv("~/assert_project_repos/assert/data/method_assert_everything_before_ICSE_no_merge_expanded.csv")
-   View(method_assert_everything_no_merge_expanded)
-m <- method_assert_everything_no_merge_expanded
-m$net_assert <- m$assert_add - m$assert_del
-m$assert_change <- m$assert_add + m$assert_del
-m$net_lines <- m$total_add - m$total_del
-m$line_change <- m$total_add + m$total_del
-
-#ols=lm(total_bug ~ line_change + net_lines + dev + assert_change + net_assert, data = m)  
-  
-#d1 <- cooks.distance(ols)
-#r <- stdres(ols)
-#a <- cbind(m, d1, r)
-#m = a[d1 <= 4/nrow(m), ]
-
-
-m <- m[m$line_change > 0,]
-m <- m[m$assert_change <= 15 & m$total_bug <= 15 & m$line_change <= 4000,]
-
-#Note -> the correlations are all positive by themselves.
-cor(m[,c(8,9,10,11,12,13)])
-#bugmodel <- glm(total_bug ~ line_change + net_lines + dev + assert_change + net_assert, family = "quasipoisson", data = m)
-bugmodelzero <- zeroinfl(total_bug ~ log(line_change) + net_lines + dev + assert_change + net_assert, data = m)
-bugmodelzero2 <- zeroinfl(total_bug ~ log(line_change) + net_lines + dev + assert_change + net_assert, dist = "negbin", data = m)
-bugmodelnb <- glm.nb(total_bug ~ log(line_change) + net_lines + dev + assert_change + net_assert, data = m)
-bugmodelhurdle <- hurdle(total_bug ~ log(line_change) + net_lines + dev + assert_change + net_assert, dist = "negbin", data = m)
-
-#This isn't quite right, I'm not excluding the changes from before...
-notBuggyBefore <- assertBeforeAndAfter[assertBeforeAndAfter$b_bug == 0,]
-b <- m
-b$key <- paste(as.character(b$project),as.character(b$file_name),as.character(b$method_name))
-notBuggyBefore$key <- paste(as.character(notBuggyBefore$b_project), as.character(notBuggyBefore$b_file), as.character(notBuggyBefore$b_method))
-b <- b[b$key != notBuggyBefore$key,]
-
-bugmodel2 <- glm(total_bug ~ line_change + net_lines + dev + assert_change + net_assert, family = "quasipoisson", data = b)
+print(xtable(anova(h)), file='../../data/Outputs/model_high_anova_revised.tex')
+print(xtable(anova(l)), file='../../data/Outputs/model_low_anova_revised.tex')

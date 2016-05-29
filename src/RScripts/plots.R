@@ -5,15 +5,15 @@ library(lsr)
 #maiin<-read.csv("~/assert_project_repos/assertPaperFinal/Data/MethodAssertInfo.csv",quote="")
 #muaiin<-read.csv("~/assert_project_repos/assertPaperFinal/Data/MethodUserAssertInfo.csv",quote="")
 #New data
-maiin<-read.csv("~/assert_project_repos/assert/data/MethodAssertInfoNoMerge.csv",quote="")
-muaiin<-read.csv("~/assert_project_repos/assert/data/MethodUserAssertInfoNoMerge.csv",quote="")
+maiin<-read.csv("../../data/Csvs/R_Inputs/MethodAssertInfoNoMerge.csv",quote="")
+muaiin<-read.csv("../../data/Csvs/R_Inputs/MethodUserAssertInfoNoMerge.csv",quote="")
 mai<-maiin[maiin$Method != "" ,]
 
-pdf("~/assert_project_repos/assert/commit-rate-per-dev-box.pdf",width=5, height=4)
+pdf("../../data/Outputs/commit-rate-per-dev-box.pdf",width=5, height=4)
 boxplot(data=mai,(Total.Added+Total.Removed+0.01)/Committer.Count~(Asserts.Added>0),log="y",names=c("No Asserts","Some Asserts"),ylab="Lines per committer (log scale)",main="Code per committer in non-Test files",outline=FALSE)
 dev.off()
 
-pdf("~/assert_project_repos/assert/ownership-dev-box.pdf",width=5, height=4)
+pdf("../../data/Outputs/ownership-dev-box.pdf",width=5, height=4)
 muai=muaiin[muaiin$Method != "" & muaiin$Author != 'None',]
 muai$Ownership=muai$Author.Total.Commits/muai$Total.Method.Commits
 boxplot(data=muai,Ownership~(Asserts.Added == 0),names=c("Added Asserts","Didn't Add Asserts"),ylab="Ownership",main="Ownership of Developers",outline=FALSE)
@@ -33,7 +33,7 @@ names(mneins)=c("Project","Filename","Method","Noexp")
 mall<-merge(myas,mneins)
 mall$yes=as.numeric(mall$Yesexp)
 mall$no=as.numeric(mall$Noexp)
-pdf("~/assert_project_repos/assert/experience-dev-box.pdf",width=5, height=4)
+pdf("../../data/Outputs/experience-dev-box.pdf",width=5, height=4)
 boxplot(mall$yes,mall$no,names=c("Added Asserts","Didn't Add Asserts"),ylab="Median Experience",main="Experience of Developers",outline=FALSE)
 dev.off()
 
