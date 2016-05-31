@@ -1,0 +1,64 @@
+Replication Steps:
+In order to replicate the data, you will need to set the file paths and the SQL schema names to be appropriate for your context.
+
+In order to run all the scripts you need to have installed
+
+The commands 'rar' and 'unrar'.
+Java 1.7 - (Required Libraries included under Resources)
+PostgreSql
+R - libraries 
+pscl, car, lsr, sqldf, xtable, stargazer
+
+TODOS: 
+3.Correct paths to be independent of system or at least list every spot that needs to be changed. (Sort of complete, need to try #4 to test it)
+4.Replicate results and then once I've done it, tell all the other authors to 
+do so as well.
+5.Fix up the few remaining spots in the paper (remove Abilio from author, fix ANOVA, general revision)
+6.Let the researcher who emailed us know its available.
+
+1. Generate Raw Data from logs
+	- The raw git logs are too large to store on GitHub, if you want to replicate from the logs, please contact me at ccasal@ucdavis.edu or caseycasal@gmail.com and we can work out a way to transfer them to
+	you.
+
+OR
+
+1. Copy the first round processed data from the rar files.  The tables
+change_summary and method_change_detail are the only two that are processed
+from the gitcproc tool.  Instructions on how to use the sql commands
+to create the other tables are located in the README.md files in the
+respective sql_script folder.
+	- Otherwise, to load in the data, do the following:
+		a) In your postgres database, create a schema called 'assert_replication'
+		b) Run the unpackRarFiles.sh script to decompress the csv files.
+		c) Run the copy_csv_to_table.sql script located under src/sql_scripts/Other
+   
+2. To reproduce the Summary table from these files, look at the README.md file
+in src/sql_scripts/
+
+
+3. Run the Java Scripts on the sql to create the relevant csv files.
+    Import the java files under the src/Java folder into Eclipse and
+    link all the libraries included in Resources.
+	a) To create the table used for RQ #1, run
+		BuildMethodBugTable.java
+	b) To create the tables used for RQ #2, run
+		BuildMethodUserTable.java
+
+
+4. Run the R scripts on the csv files to reproduce the results used in the replication.  These can be recreated by following Step 3 or by using the files
+already included in the data folder.
+
+RQ1 - bug_model.R
+	Input: method_assert_everything_before_ICSE_no_merge_expanded.csv
+	This table contains a record of changes to functions our logs from before the ICSE deadline.
+	It ignores merge commits.
+
+RQ2 - plots.R
+	Inputs: MethodAssertInfoNoMerge.csv
+			MethodUserAssertInfoNoMerge.csv
+
+Final Note on Accuracy Studies:
+The files nonFunctionStudySample.ods, FunctionSampleRep.ods and bug_accuracy_study.ods contain the randomly sampled change chunks or commits used to estimate the bug false positives and the number of false positives and negatives in function name and assert identification from the version of gitcproc used to create these datasets.  The shas and chunk names are included
+along with the evaluation of Y(yes) or N(no) of whether the tool labelled this chunk correctly.  The criteria of calling a chunk correct is listed in the paper.
+
+
