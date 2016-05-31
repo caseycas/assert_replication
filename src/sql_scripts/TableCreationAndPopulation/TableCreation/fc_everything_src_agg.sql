@@ -25,4 +25,3 @@ WITH (
 ALTER TABLE assert_replication.fc_everything_src_agg
   OWNER TO ccasal;
 GRANT ALL ON TABLE assert_replication.fc_everything_src_agg TO ccasal;
-GRANT ALL ON TABLE assert_replication.fc_everything_src_agg TO global_readers;

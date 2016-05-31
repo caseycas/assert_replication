@@ -17,4 +17,3 @@ WITH (
 ALTER TABLE assert_replication.change_summary
   OWNER TO ccasal;
 GRANT ALL ON TABLE assert_replication.change_summary TO ccasal;
-GRANT ALL ON TABLE assert_replication.change_summary TO global_readers WITH GRANT OPTION;
