@@ -19,6 +19,8 @@ do so as well.
 1. Generate Raw Data from logs
 	- The raw git logs are too large to store on GitHub, if you want to replicate from the logs, please contact me at ccasal@ucdavis.edu or caseycasal@gmail.com and we can work out a way to transfer them to
 	you.
+	- The tool to parse the logs is located at github.com/caseycas/gitcproc.
+	- Running instructions for this tool are included in that repository.
 
 OR
 
