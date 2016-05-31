@@ -3,12 +3,15 @@ library(car)
 library(sqldf)
 library(xtable)
 library(stargazer)
+
+#Assumption: your working directory is the top level of this project.
+
 #model_full_glm_binomial = glm(total_bug > 0 ~ total_add + dev + total_assert, family = "binomial", data = ms_scale)
 
 #m = read.csv("MyWork/MyCurrent/Ray_asserts_paper_ICSE2015/inputs_sep3/method_assert.csv")
 #Current set to replicate ICSE -> same dates, no big commit filtering.
-m <- read.csv("../../data/Csvs/R_Inputs/method_assert_everything_before_ICSE_no_merge.csv")
-m <- read.csv("../../data/Csvs/R_Inputs/method_assert_everything_before_ICSE_no_merge_expanded.csv")
+m <- read.csv("./data/Csvs/R_Inputs/method_assert_everything_before_ICSE_no_merge.csv")
+m <- read.csv("./data/Csvs/R_Inputs/method_assert_everything_before_ICSE_no_merge_expanded.csv")
 
 #No limit to ICSE
 #m <- read.csv("~/assert_project_repos/assert/data/method_assert_everything_no_merge.csv")
@@ -180,13 +183,13 @@ model_assert_scale  =  glm(total_bug  ~ log(total_add) + dev + assert_add,
 
 # require('stargazer')
  stargazer(model_full_bin_scale,model_assert_scale,single.row = TRUE,
-           out="../../data/Outputs/model_bug_all_scale_revised.tex")
+           out="./data/Outputs/model_bug_all_scale_revised.tex")
 
 
 print(xtable(anova(model_assert_scale)),
-      file='../../data/Outputs/model_nobug_scale_anova_revised.tex')
+      file='./data/Outputs/model_nobug_scale_anova_revised.tex')
 print(xtable(anova(model_full_bin_scale)),
-      file='../../data/Outputs/model_hurdle_anova_revised.tex')
+      file='./data/Outputs/model_hurdle_anova_revised.tex')
 
 # print(xtable(anova(model_assert_scale)),
 #       file='~/paper/assert_paper/tables/model_nobug_scale_anova.tex')
@@ -223,11 +226,11 @@ l = glm(total_bug  ~ log(total_add) + dev + assert_add, family = quasipoisson, d
 # stargazer(h,l, single.row = TRUE,
 #           out="/Users/bray/paper/assert_paper/tables/model_bug_assert_bydev.tex")
 
-stargazer(h,l, single.row = TRUE,out="../../data/Outputs/model_bug_assert_bydev_revised.tex")
+stargazer(h,l, single.row = TRUE,out="./data/Outputs/model_bug_assert_bydev_revised.tex")
 
 # #print(xtable(anova(model_assert_scale)),file ='~/paper/assert_paper/tables/model_assert_scale_anova.tex')
 # print(xtable(anova(h)), file='~/paper/assert_paper/tables/model_high_anova.tex')
 # print(xtable(anova(l)), file='~/paper/assert_paper/tables/model_low_anova.tex')
 
-print(xtable(anova(h)), file='../../data/Outputs/model_high_anova_revised.tex')
-print(xtable(anova(l)), file='../../data/Outputs/model_low_anova_revised.tex')
+print(xtable(anova(h)), file='./data/Outputs/model_high_anova_revised.tex')
+print(xtable(anova(l)), file='./data/Outputs/model_low_anova_revised.tex')

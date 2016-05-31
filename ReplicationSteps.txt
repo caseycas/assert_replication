@@ -1,13 +1,19 @@
 Replication Steps:
 In order to replicate the data, you will need to set the file paths and the SQL schema names to be appropriate for your context.
 
-In order to run all the scripts you need to have installed
+In order to run all the scripts you need to have installed:
 
 The commands 'rar' and 'unrar'.
 Java 1.7 - (Required Libraries included under Resources)
+	- I recommend using Eclipse to run the files.
 PostgreSql
 R - libraries 
 pscl, car, lsr, sqldf, xtable, stargazer
+
+Your computer should also have at least 8GB in main memory to run all the
+scripts on the processed data.  If you are rerunning the gitcproc tool, 
+you will likely need at least 16 GB (processing the linux log in particular
+may take up a lot of memory).
 
 TODOS: 
 3.Correct paths to be independent of system or at least list every spot that needs to be changed. (Sort of complete, need to try #4 to test it)
@@ -42,24 +48,49 @@ respective sql_script folder.
 		----------------------------------------------------------------------
 		You will need to alter <owner_name> to whatever your postgres username
 		is.
+			Then run with "psql <database_name> < <sql_script>"
 		d) Run the copy_csv_to_table.sql script located under src/sql_scripts/Other to copy the csv files into your newly created
 		tables.
+			E.g. psql <database_name> < <sql_script>
    
 2. To reproduce the Summary table from these files, look at the README.md file
 in src/sql_scripts/
 
 
 3. Run the Java Scripts on the sql to create the relevant csv files.
-    Import the java files under the src/Java folder into Eclipse and
-    link all the libraries included in Resources.
-	a) To create the table used for RQ #1, run
-		BuildMethodBugTable.java
-	b) To create the tables used for RQ #2, run
-		BuildMethodUserTable.java
+	a) To load in the source files:
+		- Create Eclipse New Project
+    	- Import the java files under the src/Java folder into Eclipse and
+    	- link all the libraries included in Resources.
+    
+    b) To link in the supporting libraries:
+    	- Import File System -> select src/Java
+    	- Right Click on Project -> select Build Path -> select Configure Build Path
+    	- Select the Libraries Tab and Click Add External JARs
+    	- Navigate to the Resources folder and include add JARS there, then click OK.
+
+	c) To create the table used for RQ #1, run BuildMethodBugTable.java
+		- To set up the necessary VM and command line arguments, select
+		Run -> Run Configurations.
+		- Go to the tab "Arguments"
+		- Under "Program Arguments", input your database connection string, 
+		your username, and your password.  If you have no password to the 
+		database, leave the last argument blank.  For example, a default 
+		account into a locally hosted postgres database named "caseycas" would 
+		use the arguments: jdbc:postgresql://localhost:5432/caseycas postgres
+		-The default VM memory is not large enough to process the data.
+		-Under VM arguments, put "-Xmx4096m -Xms512m"
+	b) To create the tables used for RQ #2, run BuildMethodUserTable.java
+		-The command line and VM arguments are the same as in part c)
 
 
-4. Run the R scripts on the csv files to reproduce the results used in the replication.  These can be recreated by following Step 3 or by using the files
+4. Run the R scripts on the csv files to reproduce the results used in the 
+replication.  These can be recreated by following Step 3 or by using the files
 already included in the data folder.
+If you've recreated the processed data file by following Step 3, copy them from your Eclipse project directory into data/Csvs/R_Inputs.
+Also, before you run the R scripts, set the currect working directory in R
+to the top level of this git repository.
+	- E.g. setwd("/Users/caseycas/caseycas___assert_replication")
 
 RQ1 - bug_model.R
 	Input: method_assert_everything_before_ICSE_no_merge_expanded.csv
@@ -71,7 +102,11 @@ RQ2 - plots.R
 			MethodUserAssertInfoNoMerge.csv
 
 Final Note on Accuracy Studies:
-The files nonFunctionStudySample.ods, FunctionSampleRep.ods and bug_accuracy_study.ods contain the randomly sampled change chunks or commits used to estimate the bug false positives and the number of false positives and negatives in function name and assert identification from the version of gitcproc used to create these datasets.  The shas and chunk names are included
-along with the evaluation of Y(yes) or N(no) of whether the tool labelled this chunk correctly.  The criteria of calling a chunk correct is listed in the paper.
-
-
+The files nonFunctionStudySample.ods, FunctionSampleRep.ods and 
+bug_accuracy_study.ods contain the randomly sampled change chunks or commits 
+used to estimate the bug false positives and the number of false positives and 
+negatives in function name and assert identification from the version of 
+gitcproc used to create these datasets.  The shas and chunk names are included
+along with the evaluation of Y(yes) or N(no) of whether the tool labelled this 
+chunk correctly.  The criteria of calling a chunk correct is listed in the 
+paper.
