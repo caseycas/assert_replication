@@ -32,7 +32,18 @@ respective sql_script folder.
 	- Otherwise, to load in the data, do the following:
 		a) In your postgres database, create a schema called 'assert_replication'
 		b) Run the unpackRarFiles.sh script to decompress the csv files.
-		c) Run the copy_csv_to_table.sql script located under src/sql_scripts/Other
+		c) Run each of the sql scripts in src/sql_scripts/TableCreationAndPopulation/TableCreation.
+		Note that at the bottom of each script there is a section that looks
+		like:
+		----------------------------------------------------------------------
+		ALTER TABLE assert_replication.<table_name>
+  			OWNER TO <owner_name>;
+		GRANT ALL ON TABLE assert_replication.<table_name> TO <owner_name>;
+		----------------------------------------------------------------------
+		You will need to alter <owner_name> to whatever your postgres username
+		is.
+		d) Run the copy_csv_to_table.sql script located under src/sql_scripts/Other to copy the csv files into your newly created
+		tables.
    
 2. To reproduce the Summary table from these files, look at the README.md file
 in src/sql_scripts/
