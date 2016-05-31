@@ -70,14 +70,28 @@ public class BuildMethodUserTable {
 		try
 		{
 			Connection githubDB = null;
-			if(args.length < 3)
+			String connection;
+			String username;
+			String password;
+			
+			if(args.length < 2)
 			{
 				System.out.println("Please enter the database name via jdbc, your username, and your password.");
 				System.out.println("Example: jdbc:postgresql://godot.cs.ucdavis.edu:5432/ccasal ccasal casey123");
 				System.exit(-1);
 			}
+			connection = args[0];
+			username = args[1];
+			if(args.length > 2)
+			{
+				password = args[3];
+			}
+			else
+			{
+				password = "";
+			}
 			//githubDB = DriverManager.getConnection("jdbc:postgresql://godot.cs.ucdavis.edu:5432/ccasal", "ccasal", "casey123");
-			githubDB = DriverManager.getConnection(args[0], args[1], args[2]);
+			githubDB = DriverManager.getConnection(connection, username, password);
 			githubDB.setAutoCommit(false);
 
 			System.out.println("Connected to Database.");
