@@ -25,5 +25,5 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE assert_replication.method_change_detail
-  OWNER TO ccasal;
-GRANT ALL ON TABLE assert_replication.method_change_detail TO ccasal;
+  OWNER TO postgres;
+GRANT ALL ON TABLE assert_replication.method_change_detail TO postgres;

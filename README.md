@@ -7,7 +7,10 @@ from ICSE 2015.
 It also contains the extracted tables from our git log parse.
 
 The project logs parsed are too big to store on GitHub, but are
-available on request at: ccasal@ucdavis.edu
+available on request from: ccasal@ucdavis.edu or caseycasal@gmail.com
+
+The file ReplicationSteps.txt contains the steps needed to unpack the
+data and reproduce the results in our replication set.
 
 
 Set of projects considered:

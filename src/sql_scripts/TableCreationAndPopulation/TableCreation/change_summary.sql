@@ -15,5 +15,5 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE assert_replication.change_summary
-  OWNER TO ccasal;
-GRANT ALL ON TABLE assert_replication.change_summary TO ccasal;
+  OWNER TO postgres;
+GRANT ALL ON TABLE assert_replication.change_summary TO postgres;

@@ -22,5 +22,5 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE assert_replication.fc_everything
-  OWNER TO ccasal;
-GRANT ALL ON TABLE assert_replication.fc_everything TO ccasal;
+  OWNER TO postgres;
+GRANT ALL ON TABLE assert_replication.fc_everything TO postgres;

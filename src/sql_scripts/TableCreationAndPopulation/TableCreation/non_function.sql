@@ -22,5 +22,5 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE assert_replication.non_function
-  OWNER TO ccasal;
-  GRANT ALL ON TABLE assert_replication.non_function TO ccasal;
+  OWNER TO postgres;
+  GRANT ALL ON TABLE assert_replication.non_function TO postgres;

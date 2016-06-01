@@ -7,20 +7,19 @@ The commands 'rar' and 'unrar'.
 Java 1.7 - (Required Libraries included under Resources)
 	- I recommend using Eclipse to run the files.
 PostgreSql
-R - libraries 
-pscl, car, lsr, sqldf, xtable, stargazer
+R - libraries:
+	pscl, car, lsr, sqldf, xtable, stargazer
+
+Also, there are some spreadsheet's that are not necessary to replicate the results
+saved in .ods format.  You will need OpenOffice or another program capable of opening
+these files.
 
 Your computer should also have at least 8GB in main memory to run all the
 scripts on the processed data.  If you are rerunning the gitcproc tool, 
 you will likely need at least 16 GB (processing the linux log in particular
-may take up a lot of memory).
+may take up a lot of memory).  For further instructions on gitcproc, see the
+README's for that project.
 
-TODOS: 
-3.Correct paths to be independent of system or at least list every spot that needs to be changed. (Sort of complete, need to try #4 to test it)
-4.Replicate results and then once I've done it, tell all the other authors to 
-do so as well.
-5.Fix up the few remaining spots in the paper (remove Abilio from author, fix ANOVA, general revision)
-6.Let the researcher who emailed us know its available.
 
 1. Generate Raw Data from logs
 	- The raw git logs are too large to store on GitHub, if you want to replicate from the logs, please contact me at ccasal@ucdavis.edu or caseycasal@gmail.com and we can work out a way to transfer them to
