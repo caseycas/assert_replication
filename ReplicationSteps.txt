@@ -48,12 +48,12 @@ respective sql_script folder.
 		You will need to alter <owner_name> to whatever your postgres username
 		is.
 			Then run with "psql <database_name> < <sql_script>"
-		d) Run the copy_csv_to_table.sql script located under src/sql_scripts/Other to copy the csv files into your newly created
+		d) Run the copy_csv_to_tables.sql script located under src/sql_scripts/TableCreationAndPopulation/TablePopulation to copy the csv files into your newly created
 		tables.
 			E.g. psql <database_name> < <sql_script>
    
 2. To reproduce the Summary table from these files, look at the README.md file
-in src/sql_scripts/
+in src/sql_scripts/SummaryTableSqlScripts
 
 
 3. Run the Java Scripts on the sql to create the relevant csv files.
