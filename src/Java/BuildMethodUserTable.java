@@ -84,7 +84,7 @@ public class BuildMethodUserTable {
 			username = args[1];
 			if(args.length > 2)
 			{
-				password = args[3];
+				password = args[2];
 			}
 			else
 			{
