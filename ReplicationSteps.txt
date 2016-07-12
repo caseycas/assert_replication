@@ -36,7 +36,7 @@ to create the other tables are located in the README.md files in the
 respective sql_script folder.
 	- Otherwise, to load in the data, do the following:
 		a) In your postgres database, create a schema called 'assert_replication'
-		b) Run the unpackRarFiles.sh script to decompress the csv files.
+		b) Run the unpackRarFiles.sh script to decompress the csv files ('sh unpackRarFiles.sh').
 		c) Run each of the sql scripts in src/sql_scripts/TableCreationAndPopulation/TableCreation.
 		Note that at the bottom of each script there is a section that looks
 		like:
@@ -52,7 +52,7 @@ respective sql_script folder.
 		tables.
 			E.g. psql <database_name> < <sql_script>
    
-2. To reproduce the Summary table from these files, run the run.sh shell script in src/sql_scripts/SummaryTableSqlScripts.
+2. To reproduce the Summary table from these files, run the run_all.sh shell script ('sh run_all.sh') in src/sql_scripts/SummaryTableSqlScripts.
 This script will produce the Summary table's values from left to right, top to bottom.  There are more details in the README file in this directory.
 
 
