@@ -56,17 +56,26 @@ respective sql_script folder.
 in src/sql_scripts/SummaryTableSqlScripts
 
 
-3. Run the Java Scripts on the sql to create the relevant csv files.
+3. Run the Java Scripts on the sql to create the relevant csv files. There are two ways to do
+this.  In the bin/ directory there are two runnable jar files, BuildMethodBugTable.jar and
+BuildMethodUserTable.jar.  The first produces the table used in RQ #1, the second used in 
+RQ#2.
+To run them:
+java -Xmx4096m -Xms512m -jar BuildMethodBugTable.jar <jdbc database connection> <username> [password]
+java -Xmx4096m -Xms512m -jar BuildMethodUserTable.jar <jdbc database connection> <username> [password]
+For example the three arguments could be jdbc:postgresql://localhost:5432/caseycas, caseycas, password
+
+Alternatively, you can load the source files into Eclipse, link the libraries, and run them from there.
 	a) To load in the source files:
 		- Create Eclipse New Project
-    	- Import the java files under the src/Java folder into Eclipse and
-    	- link all the libraries included in Resources.
+    		- Import the java files under the src/Java folder into Eclipse and
+    		- link all the libraries included in Resources.
     
-    b) To link in the supporting libraries:
-    	- Import File System -> select src/Java
-    	- Right Click on Project -> select Build Path -> select Configure Build Path
-    	- Select the Libraries Tab and Click Add External JARs
-    	- Navigate to the Resources folder and include add JARS there, then click OK.
+   	b) To link in the supporting libraries:
+    		- Import File System -> select src/Java
+    		- Right Click on Project -> select Build Path -> select Configure Build Path
+    		- Select the Libraries Tab and Click Add External JARs
+    		- Navigate to the Resources folder and include add JARS there, then click OK.
 
 	c) To create the table used for RQ #1, run BuildMethodBugTable.java
 		- To set up the necessary VM and command line arguments, select
