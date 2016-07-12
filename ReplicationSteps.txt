@@ -52,8 +52,8 @@ respective sql_script folder.
 		tables.
 			E.g. psql <database_name> < <sql_script>
    
-2. To reproduce the Summary table from these files, look at the README.md file
-in src/sql_scripts/SummaryTableSqlScripts
+2. To reproduce the Summary table from these files, run the run.sh shell script in src/sql_scripts/SummaryTableSqlScripts.
+This script will produce the Summary table's values from left to right, top to bottom.  There are more details in the README file in this directory.
 
 
 3. Run the Java Scripts on the sql to create the relevant csv files. There are two ways to do
