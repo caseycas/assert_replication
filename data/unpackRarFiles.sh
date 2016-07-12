@@ -1,6 +1,7 @@
 mkdir Csvs
 mkdir Csvs/Database_Tables
 mkdir Csvs/R_Inputs
+mkdir data/Outputs
 #Database tables
 unrar x Compressed/change_summary.rar ./Csvs/Database_Tables
 unrar x Compressed/non_function.rar ./Csvs/Database_Tables
